@@ -1,18 +1,27 @@
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
+    <div class="container px-4 px-lg-15">
         <a class="navbar-brand" href="{% url 'store' %}">Start Bootstrap</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-10">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'store' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="{% url 'store' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                    
                 </li>
-            </ul>
+                <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link">
+                <p> Welcome {{ user.username }}</p>
+                <a href="{% url 'logout' %}">Logout</a>
+                </li>
+    
+                {% endif %}
 
+            </ul>
+           
              <form action="" method="POST">
                 {% csrf_token %}
                 <input type="text" placeholder="Search..", name="search_query">
@@ -27,6 +36,7 @@
                     <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </button>
             </form>
+      
         </div>
     </div>
 </nav>
