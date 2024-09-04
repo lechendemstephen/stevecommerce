@@ -24,9 +24,7 @@ def sign_up(request):
             )
             if user is not None: 
                login(request, user)
-               return redirect('store')
-            
-                
+               return redirect('store')            
 
         else:
             messages.error(request, 'password do not match')
@@ -38,9 +36,22 @@ def sign_up(request):
 
 
 def sign_in(request): 
+    if request.method == "POST": 
+        user_name = request.POST['username']
+        password = request.POST['password']
 
+        user = authenticate(
+            username = user_name,
+            password = password
+        )
 
+        if user is not None: 
+            login(request, user)
+            return redirect('store')
+        messages.error(request, 'Invalid user credentials')
+        
     return render(request, 'stevecommerce/pages/login.html')
+
 
 def logout_user(request): 
     logout(request)
