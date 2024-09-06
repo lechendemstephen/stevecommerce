@@ -5,21 +5,25 @@ from cart.models import Cart, CartItem
 from django.contrib.auth.decorators import login_required # type: ignore
 # Create your views here.
 
-@login_required(login_url='login')
+@login_required
 def cart_view(request): 
     cart, created = Cart.objects.get_or_create(user=request.user)
     
-    items = cart.cartitem_set.all()
+    cart_items = cart.cartitem_set.all()
+
+    total_price = sum( item.product.price * item.quantity for item in cart_items)
+  
 
     context = {
         'cart': cart,
-        'items': items
+        'items': cart_items, 
+        'total_price': total_price
     }
 
     return render(request, 'stevecommerce/pages/cart.html', context)
 
 
-@login_required(login_url='login')
+@login_required
 def add_to_cart(request, product_id): 
     product = get_object_or_404(Products, id=product_id)
 
@@ -30,4 +34,14 @@ def add_to_cart(request, product_id):
     if not created: 
         cartitem.quantity += 1 
     cartitem.save()
-    return redirect('store')
+    return redirect('cart')
+
+
+@login_required
+
+def delete_item(request, item_id): 
+    item = get_object_or_404(CartItem, id=item_id)
+    item.delete()
+
+    return redirect('cart')
+
