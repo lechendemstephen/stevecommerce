@@ -32,4 +32,17 @@ class CartItem(models.Model):
 
         return total_price 
     
-    
+
+class Order(models.Model): 
+    orders = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(auto_now_add=True)
+
+    card_number = models.CharField(max_length=300, null=False)
+    Name_on_card = models.CharField(max_length=60, null=False)
+    expiration_date = models.CharField(max_length=20)
+    cvv = models.CharField(max_length=5)
+
+
+    def __str__(self): 
+
+        return self.orders
